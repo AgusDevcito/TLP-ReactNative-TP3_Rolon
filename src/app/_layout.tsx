@@ -1,18 +1,23 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
+import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import { useColorScheme } from 'react-native';
 
-import { AnimatedSplashOverlay } from '@/components/animated-icon';
-import AppTabs from '@/components/app-tabs';
+import { cargarNotificaciones } from '@/lib/notificaciones';
 
-SplashScreen.preventAutoHideAsync();
+// Registra el manejador de notificaciones (cómo se muestran con la app abierta). En Expo Go no hace nada.
+cargarNotificaciones();
 
-export default function TabLayout() {
+export default function RootLayout() {
   const colorScheme = useColorScheme();
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AnimatedSplashOverlay />
-      <AppTabs />
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="reporte" options={{ headerShown: false }} />
+        <Stack.Screen name="ajustes-app" options={{ title: 'Ajustes de la app' }} />
+        {/* Pantalla previa al diálogo del sistema: modal sin botón de cerrar. */}
+        <Stack.Screen name="permisos/[recurso]" options={{ presentation: 'modal', headerShown: false }} />
+      </Stack>
     </ThemeProvider>
   );
 }
+
