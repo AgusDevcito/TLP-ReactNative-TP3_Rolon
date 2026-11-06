@@ -1,5 +1,5 @@
-import { Link, router } from 'expo-router';
-import { StyleSheet } from 'react-native';
+import { router } from 'expo-router';
+import { Pressable, StyleSheet } from 'react-native';
 
 import { Boton } from '@/components/boton';
 import { Pantalla } from '@/components/pantalla';
@@ -27,7 +27,10 @@ export default function Inicio() {
         </ThemedText>
       ) : (
         reportes.map((r) => (
-          <Link key={r.id} href={{ pathname: '/reporte/[id]', params: { id: r.id } }} asChild>
+          <Pressable
+            key={r.id}
+            onPress={() => router.push({ pathname: '/reporte/[id]', params: { id: r.id } })}
+            style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}>
             <ThemedView type="backgroundElement" style={styles.tarjeta}>
               <ThemedText type="smallBold">{r.titulo}</ThemedText>
               <ThemedText type="small" themeColor="textSecondary">
@@ -37,7 +40,7 @@ export default function Inicio() {
                 {r.estado}
               </ThemedText>
             </ThemedView>
-          </Link>
+          </Pressable>
         ))
       )}
     </Pantalla>
